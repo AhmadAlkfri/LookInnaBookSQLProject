@@ -559,7 +559,7 @@ public class LookInnaBook {
     private static void addBook(Scanner sc, Connection connection){
         String isbn, title, genre;
         double price;
-        int num_pages, pub_id, percent_sales, author_id;
+        int num_pages, pub_id, percent_sales, author_id, in_stock, copies;
         System.out.println("Enter Book's ISBN: ");
         isbn = sc.nextLine();
         if(!isbnValidate(isbn)){
@@ -575,7 +575,8 @@ public class LookInnaBook {
             System.out.println("Invalid Price");
             return;
         }
-        System.out.println("Enter the genre");
+        sc.nextLine();
+        System.out.println("Enter the genre: ");
         genre = sc.nextLine();
         System.out.println("Enter Book page count: ");
         try{
@@ -583,6 +584,57 @@ public class LookInnaBook {
         }catch (Exception e){
             System.out.println("Invalid Page Count!");
             return;
+        }
+        System.out.println("Enter author ID: ");
+        try{
+            author_id = sc.nextInt();
+        }catch (Exception e){
+            System.out.println("Invalid ID!");
+            return;
+        }
+        System.out.println("Enter publisher ID: ");
+        try{
+            pub_id = sc.nextInt();
+        }catch (Exception e){
+            System.out.println("Invalid ID!");
+            return;
+        }
+        System.out.println("Enter % sales the publisher takes: ");
+        try{
+            percent_sales = sc.nextInt();
+            if(percent_sales > 100 || percent_sales < 0){
+                System.out.println("Invalid percentage!");
+                return;
+            }
+        }catch (Exception e){
+            System.out.println("Invalid percentage!");
+            return;
+        }
+        System.out.println("How many copies in stock: ");
+        try{
+            copies = sc.nextInt();
+            if(copies < 0){
+                System.out.println("Invalid!");
+                return;
+            }
+        }catch (Exception e){
+            System.out.println("Invalid!");
+            return;
+        }
+        String query = "insert into book values("+isbn+", '"+title+"', "+price+", "+num_pages+", '"+genre+"', "+copies+", 0,"+pub_id+","+percent_sales+");";
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.execute(query);
+            query = "insert into wrote values(" +isbn+", " +author_id+");";
+            try {
+                stmt = connection.createStatement();
+                stmt.execute(query);
+                System.out.println("Success.");
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
         }
 
     }
@@ -612,7 +664,6 @@ public class LookInnaBook {
                 System.out.println("4. Start an order");
                 if(isAdmin){
                     System.out.println("5. Add a book");
-                    System.out.println("6. Add a publisher");
                 }
             }
             String choice = sc.nextLine();
