@@ -21,3 +21,9 @@ values(2, 'William Golding', 0);
 
 insert into wrote
 values(9780571084838, 2);
+
+insert into users
+values('user1', 'user1', 'ON', 'Ottawa', '188 User Crecent', 'K2K3S3', false);
+
+insert into users
+values('admin', 'admin', 'ON', 'Ottawa', '188 Admin Crecent', 'K2K3S3', true);

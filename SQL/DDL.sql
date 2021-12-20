@@ -58,7 +58,7 @@ create table users
 create table orders
 	(ID				varchar(8),
 	 username		varchar(15) not null,
-	 tracking_num	varchar(10), --Is null before shipping (can't track an order that hasn't shipped)
+	 tracking_num	varchar(10) not null, 
 	 province		varchar(2) not null
 		check (province in ('NL', 'PE', 'NS', 'NB', 'QC', 'ON', 'MB', 'SK', 'AB', 'BC', 'YT', 'NT', 'NU')),
 	 city 			varchar(20) not null,
